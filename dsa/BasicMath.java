@@ -497,3 +497,84 @@ public class Main {
 Complexity Analysis
 Time Complexity: O(sqrt(N)), we check for every number between 1 and sqaure root of N.
 Space Complexity: O(2*sqrt(N)), extra space used for storing divisors.
+
+
+
+*************************Check for Prime Number****************
+सबसे छोटा प्राइम नंबर: 2 है。एकमात्र सम (Even) प्राइम नंबर: 2 है。 इसके अलावा सभी प्राइम नंबर विषम (Odd) होते हैं。
+संख्या 1: 1 न तो एक प्राइम नंबर है और न ही भाज्य संख्या, क्योंकि इसका केवल एक ही गुणनखंड होता है
+उदाहरण: 2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31.
+
+public class Solution {
+    public static boolean isPrime(int n) {
+        // Prime numbers are greater than 1
+        if (n <= 1) {
+            return false;
+        }
+        
+        // Check divisibility from 2 to sqrt(n)
+        for (int i = 2; i <= Math.sqrt(n); i++) {
+            if (n % i == 0) {
+                return false;  // Found a divisor, not prime
+            }
+        }
+        
+        return true;  // No divisors found, prime number
+    }
+
+    public static void main(String[] args) {
+        // Example 1
+        int n1 = 5;
+        System.out.println("Is " + n1 + " prime? " + isPrime(n1));  // Output: true
+        
+        // Example 2
+        int n2 = 8;
+        System.out.println("Is " + n2 + " prime? " + isPrime(n2));  // Output: false
+        
+        // Additional test cases
+        System.out.println("Is 1 prime? " + isPrime(1));   // false
+        System.out.println("Is 2 prime? " + isPrime(2));   // true
+        System.out.println("Is 17 prime? " + isPrime(17)); // true
+        System.out.println("Is 25 prime? " + isPrime(25)); // false
+    }
+}
+
+Note: Kyon sirf √n tak check karna kaafi hai?
+
+Maan lo `n = a × b`
+
+Agar dono factors `sqrt(n)` se bade hon:
+
+```text
+a > sqrt(n)
+b > sqrt(n)
+```
+
+To:
+
+```text
+a × b > n
+```
+
+Lekin `a × b = n` hona chahiye. Ye possible nahi hai.
+
+Isliye agar kisi number ka factor hai, to kam se kam **ek factor `sqrt(n)` se chhota ya barabar** zarur hoga.
+
+Isliye prime check karte waqt:
+
+```java
+for(int i = 2; i <= Math.sqrt(n); i++)
+```
+
+tak check karna hi kaafi hai.
+
+Example:
+
+* `36 = 4 × 9`
+* `sqrt(36) = 6`
+
+Yahan 4 factor hai jo 6 se chhota hai, isliye 9 tak check karne ki zarurat nahi padti.
+
+**Interview answer (1 line):**
+
+> Factors pair me aate hain, aur kisi composite number ka kam se kam ek factor `√n` se chhota ya barabar hota hai, isliye `2` se `√n` tak check karna sufficient hai.
