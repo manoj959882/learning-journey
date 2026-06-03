@@ -578,3 +578,65 @@ Yahan 4 factor hai jo 6 se chhota hai, isliye 9 tak check karne ki zarurat nahi 
 **Interview answer (1 line):**
 
 > Factors pair me aate hain, aur kisi composite number ka kam se kam ek factor `√n` se chhota ya barabar hota hai, isliye `2` se `√n` tak check karna sufficient hai.
+
+
+
+
+************ find the meadian in 2d array ************
+
+import java.util.Arrays;
+
+public class Median2DArray {
+    
+    public static double findMedian(int[][] matrix) {
+        // Step 1: Count total elements
+        int rows = matrix.length;
+        int cols = matrix[0].length;
+        int totalElements = rows * cols;
+        
+        // Step 2: Copy all elements to 1D array
+        int[] flatArray = new int[totalElements];
+        int index = 0;
+        
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                flatArray[index++] = matrix[i][j];
+            }
+        }
+        
+        // Step 3: Sort the 1D array
+        Arrays.sort(flatArray);
+        
+        // Step 4: Find median
+        if (totalElements % 2 == 1) {
+            // Odd number of elements
+            return flatArray[totalElements / 2];
+        } else {
+            // Even number of elements
+            int mid1 = flatArray[totalElements / 2 - 1];
+            int mid2 = flatArray[totalElements / 2];
+            return (mid1 + mid2) / 2.0;
+        }
+    }
+    
+    public static void main(String[] args) {
+        // Example 2D array
+        int[][] arr = {
+            {5, 2, 8},
+            {1, 9, 3},
+            {7, 4, 6}
+        };
+        
+        double median = findMedian(arr);
+        System.out.println("Median is: " + median);
+        
+        // Another example
+        int[][] arr2 = {
+            {1, 3, 5},
+            {2, 4, 6}
+        };
+        
+        double median2 = findMedian(arr2);
+        System.out.println("Median is: " + median2);
+    }
+}
