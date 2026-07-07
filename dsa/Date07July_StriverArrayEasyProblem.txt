@@ -1,0 +1,379 @@
+*****Union of Two Sorted Arrays   ******
+
+Problem Statement: Given two sorted arrays, arr1, and arr2 of size n and m. Find the union of two sorted arrays.
+The union of two arrays can be defined as the common and distinct elements in the two arrays.
+NOTE: Elements in the union should be in ascending order.
+
+Input:n = 5,m = 5 arr1[] = {1,2,3,4,5}  arr2[] = {2,3,4,4,5}
+Output: {1,2,3,4,5}
+Explanation: Common Elements in arr1 and arr2  are:  2,3,4,5
+Distnict Elements in arr1 are : 1
+Distnict Elemennts in arr2 are : No distinct elements.
+Union of arr1 and arr2 is {1,2,3,4,5}
+
+Input:n = 10,m = 7,arr1[] = {1,2,3,4,5,6,7,8,9,10}arr2[] = {2,3,4,4,5,11,12}
+Output: {1,2,3,4,5,6,7,8,9,10,11,12}
+Explanation: Common Elements in arr1 and arr2  are:  2,3,4,5
+Distnict Elements in arr1 are : 1,6,7,8,9,10
+Distnict Elemennts in arr2 are : 11,12
+Union of arr1 and arr2 is {1,2,3,4,5,6,7,8,9,10,11,12}
+
+
+Approach 1:
+Using a set we can find the distinct elements because the set does not hold any duplicates. Hence we can find the union of arr1 and arr2.
+Initialize an empty set.
+Insert all elements from the first array into set.
+Insert all elements from the second array into set.
+Convert the set into a list/array to get the result.
+If required in sorted order, sort the list before returning.
+Return/print the union result.
+
+ public List<Integer> findUnion(int[] arr1, int[] arr2) {
+        // Create a TreeSet to store unique sorted elements
+        Set<Integer> st = new TreeSet<>();
+
+        // Insert elements from first array
+        for (int num : arr1) {
+            st.add(num);
+        }
+
+        // Insert elements from second array
+        for (int num : arr2) {
+            st.add(num);
+        }
+
+        // Convert set to list
+        return new ArrayList<>(st);
+}
+}
+
+
+
+*****Two Pointers  ***
+
+Since both arrays are sorted, we can efficiently find their union by iterating through them simultaneously. Using two pointers, one for each array, we compare elements and add the smaller one to the result (skipping duplicates). If elements are equal, add once and move both pointers. This way, we merge the arrays like in merge sort, avoiding extra space for maps or sets and achieving linear time complexity.
+Initialize two pointers at the start of both arrays.
+While neither pointer has reached the end:
+If element pointed by first pointer is smaller, add it to result if not duplicate, move first pointer.
+If element pointed by second pointer is smaller, add it to result if not duplicate, move second pointer.
+If both elements are equal, add one to result if not duplicate, move both pointers.
+After exiting loop, append remaining elements from either array, skipping duplicates.
+Return the result array containing the union.
+
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class Main {
+
+    public static int[] unionArray(int[] nums1, int[] nums2) {
+        List<Integer> al = new ArrayList<>();
+        int i = 0, j = 0;
+
+        while (i < nums1.length && j < nums2.length) {
+            if (nums1[i] < nums2[j]) {
+                if (al.isEmpty() || al.get(al.size() - 1) != nums1[i]) {
+                    al.add(nums1[i]);
+                }
+                i++;
+            } else if (nums1[i] > nums2[j]) {
+                if (al.isEmpty() || al.get(al.size() - 1) != nums2[j]) {
+                    al.add(nums2[j]);
+                }
+                j++;
+            } else {
+                // equal case
+                if (al.isEmpty() || al.get(al.size() - 1) != nums1[i]) {
+                    al.add(nums1[i]);
+                }
+                i++;
+                j++;
+            }
+        }
+
+        // leftover elements nums1 se
+        while (i < nums1.length) {
+            if (al.isEmpty() || al.get(al.size() - 1) != nums1[i]) {
+                al.add(nums1[i]);
+            }
+            i++;
+        }
+
+        // leftover elements nums2 se
+        while (j < nums2.length) {
+            if (al.isEmpty() || al.get(al.size() - 1) != nums2[j]) {
+                al.add(nums2[j]);
+            }
+            j++;
+        }
+
+        // List<Integer> ko int[] me convert karo
+        int[] result = new int[al.size()];
+        for (int k = 0; k < al.size(); k++) {
+            result[k] = al.get(k);
+        }
+        return result;
+    }
+
+    public static void main(String[] args) {
+        int[] arr1 = {-2, 3, 4, 4, 4};
+        int[] arr2 = {6, 7, 7};
+        int[] union = unionArray(arr1, arr2);
+        System.out.println(java.util.Arrays.toString(union));
+    }
+}
+
+
+
+
+**Find Second Smallest and Second Largest Element in an array **
+
+Example 1:
+Input:
+ [1, 2, 4, 7, 7, 5]  
+Output:
+  
+Second Smallest : 2  
+Second Largest : 5  
+Explanation:
+  The elements are sorted as 1, 2, 4, 5, 7, 7.  
+Hence, the second smallest element is 2, and the second largest element is 5.
+
+Example 2:
+Input:
+ [1]  
+Output:
+  
+Second Smallest : -1  
+Second Largest : -1  
+Explanation:
+  Since there is only one element in the array, it is both the largest and smallest element.  
+Therefore, there is no second smallest or second largest element present.
+
+Brute Force:
+
+Sort the array in ascending order.
+The element at the second index (index 1) is the second smallest element.
+The element at the second index from the end (index length-2) is the second largest element.
+
+// Sort the array to easily find the second smallest and second largest elements
+        Arrays.sort(arr);
+// Second smallest element is at index 1 after sorting
+        int small = arr[1];
+// Second largest element is at index n-2 after sorting
+        int large = arr[n - 2];
+
+***Optimal Approach::
+
+char variables chahiye honge: small, second_small, large, aur second_large. small aur second_small ko INT_MAX se initialize karo, aur large aur second_large ko INT_MIN se initialize karo.
+Second Smallest Algorithm:
+Agar current element small se chota hai, to second_small aur small dono ki values update karo.
+Warna agar current element second_small se chota hai, to sirf second_small ki value update karo.
+Poora array traverse karne ke baad, second smallest element second_small variable me store ho jayega.
+Second Largest Algorithm:
+Agar current element large se bada hai, to second_large aur large dono ki values update karo.
+Warna agar current element second_large se bada hai, to sirf second_large ki value update karo.
+Poora array traverse karne ke baad, second largest element second_large variable me store ho jayega.
+
+
+
+
+import java.util.*;
+
+class Solution {
+
+    // Function to find the second smallest element in the array
+    public static int secondSmallest(int[] arr, int n) {
+        // Edge case: if the array has fewer than 2 elements
+        if (n < 2)
+            return -1;
+
+        int small = Integer.MAX_VALUE;
+        int second_small = Integer.MAX_VALUE;
+
+        // Loop through the array to find the second smallest element
+        for (int i = 0; i < n; i++) {
+            // Update the smallest and second smallest values
+            if (arr[i] < small) {
+                second_small = small;
+                small = arr[i];
+            } 
+            else if (arr[i] < second_small && arr[i] != small) {
+                second_small = arr[i];
+            }
+        }
+        return second_small; // Return the second smallest element
+    }
+
+    // Function to find the second largest element in the array
+    public static int secondLargest(int[] arr, int n) {
+        // Edge case: if the array has fewer than 2 elements
+        if (n < 2)
+            return -1;
+
+        int large = Integer.MIN_VALUE, second_large = Integer.MIN_VALUE;
+
+        // Loop through the array to find the second largest element
+        for (int i = 0; i < n; i++) {
+            // Update the largest and second largest values
+            if (arr[i] > large) {
+                second_large = large;
+                large = arr[i];
+            } 
+            else if (arr[i] > second_large && arr[i] != large) {
+                second_large = arr[i];
+            }
+        }
+        return second_large; // Return the second largest element
+    }
+}
+
+
+public class Main {
+
+    public static void main(String[] args) {
+        
+        // Array of elements
+        int[] arr = {1, 2, 4, 7, 7, 5};
+
+        // Calculate the size of the array
+        int n = arr.length;
+
+        // Find the second smallest and second largest elements
+        int sS = Solution.secondSmallest(arr, n);
+        int sL = Solution.secondLargest(arr, n);
+
+        // Output the results
+        System.out.println("Second smallest is " + sS);
+        System.out.println("Second largest is " + sL);
+    }
+}
+
+
+/*
+Time Complexity: O(N), we do two linear traversals in our array.
+
+Space Complexity: O(1), as we are using a constant
+*/
+
+
+
+
+
+
+*****Rotate array by K elements  ***
+
+Input : nums = [1, 2, 3, 4, 5, 6, 7], k = 2, right
+Output : [6, 7, 1, 2, 3, 4, 5]
+Explanation : rotate 1 step to the right: [7, 1, 2, 3, 4, 5, 6]
+rotate 2 steps to the right: [6, 7, 1, 2, 3, 4, 5] 
+
+Input : nums = [1, 2, 3, 4, 5, 6], k=2, left
+Output : [3, 4, 5, 6, 1, 2]
+Explanation :rotate 1 step to the left: [2, 3, 4, 5, 6, 1]
+rotate 2 steps to the left: [3, 4, 5, 6, 1, 2]
+
+
+Algorithm:
+
+Instead of simulating each rotation one by one, we can get the rotated array in-place by reversing specific parts of the array. This works because rotating is just rearranging sections of the array.
+For Right Rotation by k steps:
+Reverse the entire array
+Reverse the first k elements
+Reverse the remaining n - k elements
+For Left Rotation by k steps:
+Reverse the first k elements
+Reverse the remaining n - k elements
+Reverse the entire array
+Normalize k by doing k = k % N
+If direction is "right":
+Reverse the entire array
+Reverse the first k elements
+Reverse the rest (from k to end)
+If direction is "left":
+Reverse the first k elements
+Reverse the rest (from k to end)
+Reverse the entire array
+
+
+import java.util.*;
+
+class Solution {
+    // Function to reverse part of the array between given indices
+    void reverseArray(int[] nums, int start, int end) {
+        // Swap elements until start meets end
+        while (start < end) {
+            int temp = nums[start];
+            nums[start] = nums[end];
+            nums[end] = temp;
+            start++;
+            end--;
+        }
+    }
+
+    // Function to rotate array left or right by k steps
+    public int[] rotateArray(int[] nums, int k, String direction) {
+        // Get array length
+        int n = nums.length;
+
+        // Edge case: do nothing if array is empty or k is 0
+        if (n == 0 || k == 0) return nums;
+
+        // Normalize k if greater than n
+        k = k % n;
+
+        // If rotation is to the right
+        if (direction.equals("right")) {
+            // Step 1: reverse entire array
+            reverseArray(nums, 0, n - 1);
+
+            // Step 2: reverse first k elements
+            reverseArray(nums, 0, k - 1);
+
+            // Step 3: reverse remaining n-k elements
+            reverseArray(nums, k, n - 1);
+        } 
+        // If rotation is to the left
+        else if (direction.equals("left")) {
+            // Step 1: reverse first k elements
+            reverseArray(nums, 0, k - 1);
+
+            // Step 2: reverse remaining n-k elements
+            reverseArray(nums, k, n - 1);
+
+            // Step 3: reverse entire array
+            reverseArray(nums, 0, n - 1);
+        }
+
+        // Return the rotated array
+        return nums;
+    }
+}
+
+// Driver code
+public class Main {
+    public static void main(String[] args) {
+        // Create instance of Solution
+        Solution sol = new Solution();
+
+        // Input array and parameters
+        int[] nums = {1, 2, 3, 4, 5, 6, 7};
+        int k = 2;
+        String direction = "right";
+
+        // Call rotateArray and store result
+        int[] result = sol.rotateArray(nums, k, direction);
+
+        // Print rotated array
+        for (int num : result) {
+            System.out.print(num + " ");
+        }
+    }
+}
+
+
+
+Time Complexity: O(N), We reverse parts of the array each reverse takes linear time. So total work is 3 × O(N) = O(N).
+
+Space Complexity: O(1) All modifications are done in-place, using only a few temporary variables.
+
