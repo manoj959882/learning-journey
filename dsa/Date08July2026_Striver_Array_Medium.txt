@@ -1,0 +1,72 @@
+***************   Find the repeating and missing numbers   ***************
+
+
+Example 1:
+Input:
+ nums = [3, 5, 4, 1, 1]  
+Output:
+ [1, 2]  
+Explanation:
+ 1 appears twice in the array, and 2 is missing from the array. So the output is [1, 2].
+
+Example 2:
+Input:
+ nums = [1, 2, 3, 6, 7, 5, 7]  
+Output:
+ [7, 4]  
+BruteForce me set ka use karke kar do ..
+Optimal Approach :
+
+* Sabse pehle, diye gaye array ke saare elements ka sum calculate karo, jise `S` bolte hain, aur `1 se N` tak natural numbers ka sum calculate karo, jise `Sn` bolte hain. `Sn` ka formula hai `(N * (N + 1)) / 2`.
+* Ab `S - Sn` calculate karo. Isse humein `X - Y` milta hai, jaha `X` repeating number hai aur `Y` missing number hai.
+* Iske baad, array ke saare elements ke squares ka sum calculate karo, jise `S2` bolte hain, aur pehle N numbers ke squares ka sum calculate karo, jise `S2n` bolte hain. `S2n` ka formula hai `(N * (N + 1) * (2N + 1)) / 6`.
+* Ab `S2 - S2n` calculate karo. Isse humein `X2 - Y2` milta hai.
+* `S - Sn = X - Y` aur `S2 - S2n = X2 - Y2` in equations se, hum `X + Y` nikal sakte hain is formula se: `(S2 - S2n) / (S - Sn)`.
+* `X + Y` aur `X - Y` ki values use karke, hum simple addition aur subtraction se `X` aur `Y` solve kar sakte hain.
+* Aakhir me, `X` (repeating number) aur `Y` (missing number) ki values return kar do.
+
+import java.util.*;
+
+class Solution {
+    public int[] findMissingRepeatingNumbers(int[] nums) {
+        int n = nums.length;
+        long sn = (long) n * (n + 1) / 2;              // Expected sum: 1 se n tak
+        long s2n = (long) n * (n + 1) * (2L * n + 1) / 6; // Expected sum of squares
+
+        long s = 0, s2 = 0;
+        for (int i = 0; i < n; i++) {
+            s += nums[i];
+            s2 += (long) nums[i] * (long) nums[i];
+        }
+
+        long val1 = s - sn;      // X - Y (repeating minus missing)
+        long val2 = s2 - s2n;    // X^2 - Y^2 (squares ka difference)
+
+        val2 = val2 / val1;      // X + Y (dono equations solve karke)
+
+        long x = (val1 + val2) / 2;  // Repeating number nikala
+        long y = x - val1;           // Missing number nikala
+
+        return new int[]{(int) x, (int) y};
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        int[] nums = {3, 1, 2, 5, 4, 6, 7, 5};
+        Solution sol = new Solution();
+        int[] result = sol.findMissingRepeatingNumbers(nums);
+        // Repeating aur missing numbers print kar rahe hain
+        System.out.println("The repeating and missing numbers are: {" 
+                            + result[0] + ", " + result[1] + "}");
+    }
+}
+
+
+
+
+
+
+
+
+
