@@ -17,7 +17,21 @@ Ye table fill karo.
 |     1 |       |            |         |         |       |
 |     2 |       |            |         |         |       |
 
+***Maine observe kiya hai ki tum har pattern ko deeply samajhna chahte ho. Isliye main tumhe ye Master Formula de raha hoon.
 
+
+
+| Problem Statement | Map Key    | Map Value     |
+| ----------------- | ---------- | ------------- |
+| Count             | Prefix Sum | Frequency     |
+| Longest           | Prefix Sum | First Index   |
+| Shortest          | Prefix Sum | Latest Index  |
+| Print One         | Prefix Sum | First Index   |
+| Print All         | Prefix Sum | List<Integer> |
+
+Agar interview me koi Prefix Sum problem aaye, sabse pehle ye decide karo:
+
+"Map ki value kya honi chahiye?"
 
 
 
@@ -543,4 +557,537 @@ class Solution {
 
 
 
+
+***************************************   Pattern to solve the above problem                  **************
+
+
+Bhai, abhi tak humne **4 bade patterns** cover kiye hain. Agar ye 4 tum master kar loge, to LeetCode ki lagbhag **40–50 medium problems** solve kar loge.
+
+---
+
+# 📌 Pattern 1 : Kadane's Algorithm
+
+## Kab use karna hai?
+
+Question me keywords:
+
+```text
+Maximum Sum
+
+Maximum Subarray
+
+Largest Sum
+
+Best Sum
+```
+
+---
+
+## Thinking
+
+```text
+Har index par socho
+
+Current subarray continue karun?
+
+Ya
+
+Naya subarray yahin se start karun?
+```
+
+---
+
+## Variables
+
+```java
+currentSum
+
+maxSum
+
+tempStart
+
+startIndex
+
+endIndex
+```
+
+---
+
+## Formula
+
+```java
+currentSum += nums[i]
+
+if(currentSum > maxSum)
+
+update answer
+
+if(currentSum < 0)
+
+currentSum=0
+```
+
+---
+
+## Interview Variations
+
+```text
+✅ Maximum Sum
+
+✅ Print Maximum Subarray
+
+✅ Start Index
+
+✅ End Index
+
+✅ Length
+
+✅ Circular Maximum
+
+✅ Maximum Product
+```
+
+---
+
+# 📌 Pattern 2 : Prefix Sum + First Index
+
+## Kab use karna hai?
+
+Question me
+
+```text
+Longest
+
+Length
+
+Maximum Length
+
+Zero Sum
+
+Sum = K
+```
+
+---
+
+## Thinking
+
+Question
+
+```text
+Longest
+```
+
+Matlab
+
+```text
+First occurrence preserve karo.
+```
+
+---
+
+## Formula
+
+```text
+Current Prefix
+
+-
+
+Old Prefix
+
+=
+
+K
+```
+
+Matlab
+
+```text
+Old Prefix
+
+=
+
+CurrentPrefix-K
+```
+
+---
+
+## HashMap
+
+```java
+Map<PrefixSum,Integer>
+
+↓
+
+First Index
+```
+
+---
+
+## Problems
+
+```text
+Longest Zero Sum Subarray
+
+Longest Subarray Sum=K
+```
+
+---
+
+## Dry Run Thinking
+
+Har iteration
+
+```text
+Current Prefix
+
+↓
+
+Required Prefix
+
+↓
+
+Map me hai?
+
+↓
+
+Length
+```
+
+---
+
+# 📌 Pattern 3 : Prefix Sum + Frequency
+
+Ye bahut important hai.
+
+## Kab use karna hai?
+
+Question me
+
+```text
+Count
+
+How many
+
+Number of Subarrays
+```
+
+---
+
+## Thinking
+
+Question
+
+```text
+Count
+```
+
+Matlab
+
+```text
+Frequency store hogi.
+```
+
+---
+
+## HashMap
+
+```java
+Map<PrefixSum,Integer>
+
+↓
+
+Frequency
+```
+
+---
+
+## Formula
+
+```text
+CurrentPrefix
+
+-
+
+OldPrefix
+
+=
+
+K
+```
+
+---
+
+## Har iteration
+
+```java
+currentSum+=...
+
+required=currentSum-k
+
+count+=frequency
+
+frequency++
+```
+
+---
+
+## Problems
+
+```text
+LeetCode 560
+
+Subarray Sum Equals K
+```
+
+---
+
+# 📌 Pattern 4 : Transformation + Prefix Sum
+
+Ye interview ka favourite pattern hai.
+
+Question directly
+
+```text
+Sum
+```
+
+ke bare me nahi hota.
+
+Pehle question ko convert karte hain.
+
+Fir Prefix Sum lagate hain.
+
+---
+
+## Example 1
+
+Question
+
+```text
+Exactly K Odd Numbers
+```
+
+Transformation
+
+```text
+Odd
+
+↓
+
+1
+```
+
+```text
+Even
+
+↓
+
+0
+```
+
+Ab question ban gaya
+
+```text
+Count Subarray Sum=K
+```
+
+---
+
+## Example
+
+```text
+1 1 2 1 1
+```
+
+Convert
+
+```text
+1 1 0 1 1
+```
+
+Fir
+
+LeetCode 560
+
+---
+
+## HashMap
+
+```java
+Map<PrefixSum,Frequency>
+```
+
+Same
+
+---
+
+## Problems
+
+```text
+Count Number of Nice Subarrays
+```
+
+---
+
+# Pattern Connection
+
+```text
+                 Kadane
+                    │
+            Maximum Sum
+                    │
+                    │
+────────────────────────────────────────
+
+             Prefix Sum
+                  │
+      ┌───────────┴───────────┐
+      │                       │
+      │                       │
+ First Index             Frequency
+      │                       │
+      │                       │
+Longest                 Count
+      │                       │
+      │                       │
+Longest Sum K          Sum Equals K
+Zero Sum               Nice Subarrays
+```
+
+---
+
+# HashMap Decision Table
+
+| Question  | HashMap Value |
+| --------- | ------------- |
+| Longest   | First Index   |
+| Count     | Frequency     |
+| Print One | First Index   |
+| Print All | List<Integer> |
+
+Ye table interview me bahut kaam aati hai.
+
+---
+
+# Prefix Sum Formula
+
+Har Prefix Sum problem me sirf ye yaad rakho:
+
+```text
+Current Prefix
+
+-
+
+Old Prefix
+
+=
+
+Required Sum
+```
+
+Isse
+
+```text
+Old Prefix
+
+=
+
+Current Prefix - Required Sum
+```
+
+Bas.
+
+Ye har Prefix Sum problem ka base hai.
+
+---
+
+# Tumhare liye Memory Trick 😄
+
+## Maximum
+
+```text
+↓
+
+Kadane
+```
+
+---
+
+## Longest
+
+```text
+↓
+
+Prefix Sum
+
++
+
+First Index
+```
+
+---
+
+## Count
+
+```text
+↓
+
+Prefix Sum
+
++
+
+Frequency
+```
+
+---
+
+## Direct Sum nahi hai
+
+Pehle convert karo.
+
+```text
+Odd
+
+↓
+
+1
+```
+
+```text
+Even
+
+↓
+
+0
+```
+
+Fir
+
+```text
+Count
+
+↓
+
+Prefix Sum
+
+↓
+
+Frequency
+```
+
+---
+
+# Ab tak jo LeetCode tum solve kar chuke ho
+
+| LeetCode / Problem                    | Pattern                                 |
+| ------------------------------------- | --------------------------------------- |
+| Maximum Subarray (53)                 | Kadane                                  |
+| Longest Subarray Sum = K              | Prefix Sum + First Index                |
+| Longest Zero Sum Subarray             | Prefix Sum + First Index                |
+| Subarray Sum Equals K (560)           | Prefix Sum + Frequency                  |
+| Count Number of Nice Subarrays (1248) | Transformation + Prefix Sum + Frequency |
+
+
+
+https://leetcode.com/problems/count-number-of-nice-subarrays/description/ isko bhi solve kar lena easy hai 
 
