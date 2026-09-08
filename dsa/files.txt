@@ -1,0 +1,977 @@
+import java.util.;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
+
+
+import java.time.LocalDate;
+
+class Sale {
+    private String product;
+    private String category;
+    private double revenue;
+    private LocalDate date;
+    private int quantity;
+
+    public Sale(String product, String category, double revenue, LocalDate date, int quantity) {
+        this.product = product;
+        this.category = category;
+        this.revenue = revenue;
+        this.date = date;
+        this.quantity = quantity;
+    }
+
+     Getters
+    public String getProduct() { return product; }
+    public String getCategory() { return category; }
+    public double getRevenue() { return revenue; }
+    public LocalDate getDate() { return date; }
+    public int getQuantity() { return quantity; }
+
+    @Override
+    public String toString() {
+        return String.format(%s(%.2f), product, revenue);
+    }
+}
+
+ class Employee {
+    private String name;
+    private String dept;
+    private String gender;
+    private double salary;
+    private int age;
+
+    public Employee(String name, String dept, String gender, double salary, int age) {
+        this.name = name;
+        this.dept = dept;
+        this.gender = gender;
+        this.salary = salary;
+        this.age = age;
+    }
+
+     Getters
+    public String getName() { return name; }
+    public String getDept() { return dept; }
+    public String getGender() { return gender; }
+    public double getSalary() { return salary; }
+    public int getAge() { return age; }
+
+    @Override
+    public String toString() {
+        return String.format(%s(%.2f), name, salary);
+    }
+}
+
+
+class Student{
+    int makrs;
+    String name;
+    Student(String name,int makrs){
+        this.makrs=makrs;
+        this.name=name;
+    }
+    public String getName() {
+        return name;
+    }
+    public long getMarks(){
+        return makrs;
+    }
+}
+
+class Animal {
+    void sound() {
+        System.out.println(Animal);
+    }
+}
+
+class Dog extends Animal{
+
+    @Override
+    void sound(){
+        System.out.println(barking );
+    }
+    void bark(){
+        System.out.println(bhau bhau);
+    }
+}
+
+
+
+public class Main {
+
+    public static ListListInteger mergeOverlap(ListListInteger intervals) {
+        ListListInteger ans=new ArrayList();
+        if (intervals.isEmpty()) return ans;
+        intervals.sort((a,b)-a.get(1)-b.get(0));
+        for (ListInteger elemIntervalintervals){
+            if (ans.isEmpty() ans.get(ans.size()-1).get(1)elemInterval.get(0)){
+                ans.add(elemInterval);
+            }
+            else{
+                int newEnd=Math.max(elemInterval.get(1),ans.get(ans.size()-1).get(1));
+                ans.get(ans.size()-1).set(1,newEnd);
+            }
+        }
+        return ans;
+    }
+
+    public static int[][] merge(int[][] intervals) {
+        if (intervals == null  intervals.length = 1) {
+            return intervals;
+        }
+        Arrays.sort(intervals,(a,b)-a[0]-b[0]);
+        Listint[] result = new ArrayList();
+        int[] current = intervals[0];
+        result.add(current);
+
+        for (int[] interval  intervals) {
+            int currentEnd=current[1];
+            int nextStart=interval[0];
+            int nextEnd=interval[1];
+            if (nextStart=currentEnd){
+                current[1]=Math.max(currentEnd,nextEnd);
+            }
+            else{
+                current=interval;
+                result.add(current);
+            }
+        }
+        return result.toArray(new int[result.size()][]);
+
+    }
+
+    public static int[][] insert(int[][] intervals, int[] newInterval) {
+
+        Listint[] al = new ArrayList();
+        int i=0;
+        int n=intervals.length;
+        while (in && intervals[i][1]newInterval[0]) {
+            al.add(intervals[i]);
+            i++;
+        }
+
+        while (in&&intervals[i][0]=newInterval[1]){
+            newInterval[0]=Math.min(newInterval[0],intervals[i][0]);
+            newInterval[1]=Math.max(newInterval[1],intervals[i][1]);
+            i++;
+        }
+        al.add(newInterval);
+
+        while (in){
+            al.add(intervals[i]);
+            i++;
+        }
+        return al.toArray(new int[al.size()][]);
+
+    }
+
+    public static long numberOfInversions(int[] nums) {
+        long count =mergeSort(nums,0,nums.length-1);
+        return count;
+    }
+
+    public static long  mergeSort(int[] nums,int left,int right){
+        if (left==right) return 0;
+        int finalCount=0;
+        if (leftright) {
+            int mid=left+(right-left)2;
+           long leftCount= mergeSort(nums,left,mid);
+           long rightCount= mergeSort(nums,mid+1,right);
+           long mergeCount = merge(nums,left,mid,right);
+           finalCount+= leftCount+rightCount+mergeCount;
+        }
+        return finalCount;
+    }
+
+    public static void mergeTwoSortedArray(int[] nums1, int m, int[] nums2, int n) {
+        int i=m-1,j=n-1,k=m+n-1;
+        while (i = 0 && j = 0){
+            if (nums1[i]  nums2[j]){
+                nums1[k] = nums1[i];
+                i--; k--;
+            }
+            if (nums1[i] = nums2[j]){
+                nums1[k] = nums2[j] ;
+                j--; k--;
+            }
+        }
+        while (j = 0) {
+            nums1[k] = nums2[j];
+            j--;
+            k--;
+        }
+    }
+
+    public static long merge(int[] nums,int left,int mid,int right){
+        int i=left,j=right;
+        int k=0;
+        int count=0;
+        int[] temp=new int[right-left+1];
+        while (i=mid&&j=right){
+            if (nums[i]=nums[j]){
+                temp[k++] = nums[i++];
+            }
+
+            else if (nums[i]nums[j]){
+                count+=(mid-i+1);
+                temp[k++] = nums[j++];
+
+            }
+        }
+        while (i = mid){
+            temp[k] = nums[i];
+            i++;
+            k++;
+        }
+        while (j=right){
+            temp[k++]=nums[j++];
+
+        }
+        for (int p=0;ptemp.length;p++){
+            nums[left + p] = temp[p];
+        }
+        return count;
+
+    }
+
+    public static int maxProduct(int[] nums) {
+        if (nums == null  nums.length == 0) {
+            return 0;}
+        int n = nums.length;
+        int maxProduct = nums[0];
+        int minProduct = nums[0];
+        int answer = nums[0];
+        for (int i = 1; i  n; i++) {
+            if (nums[i]  0) {
+                int temp = maxProduct;
+                maxProduct = minProduct;
+                minProduct = temp;
+            }
+             Update max and min products ending at the current position
+            maxProduct = Math.max(nums[i], maxProduct  nums[i]);
+            minProduct = Math.min(nums[i], minProduct  nums[i]);
+             Update the global result
+            answer = Math.max(answer, maxProduct);
+        }
+        return answer;
+    }
+
+    public static int[] productExceptSelf(int[] nums) {
+        int n = nums.length;
+        int[] result = new int[n];
+
+        int leftProduct = 1;
+        for (int i = 0; i  n; i++) {
+            result[i] = leftProduct;       Store product of all elements to the left
+            leftProduct = nums[i];         Update left product for next iteration
+        }
+
+         Second pass Calculate products of all elements to the right of each index
+         Multiply each position by the product of all elements after index i
+        int rightProduct = 1;
+        for (int i = n - 1; i = 0; i--) {
+            result[i] = rightProduct;      Multiply by product of all elements to the right
+            rightProduct = nums[i];        Update right product for next iteration
+        }
+
+        return result;
+
+    }
+
+    public static int searchInsert(int[] nums, int target) {
+        int left =0,right=nums.length-1;
+        while (left=right){
+            int mid=left+(right-left)2;
+            if (nums[mid]==target){
+                return mid;
+            }
+            if (nums[mid]target){
+                left=mid+1;
+            }
+            else {
+                right=mid-1;
+            }
+        }
+        return left;
+
+    }
+
+    public static int numSubarrayProductLessThanK(int[] nums, int k) {
+        if (k = 1) return 0;   Important edge case
+
+        int left = 0;
+        int product = 1;
+        int count = 0;
+
+        for (int right = 0; right  nums.length; right++) {
+            product = nums[right];
+
+             Jab product = k ho, tab left pointer ko aage badhao
+            while (product = k && left = right) {
+                product = nums[left];
+                left++;
+            }
+
+             Current window ke andar kitne subarrays valid hain
+            count += right - left + 1;
+        }
+
+        return count;
+
+    }
+
+    public static int eraseOverlapIntervals(int[][] intervals) {
+        Arrays.sort(intervals,(a,b)-a[1]-b[1]);
+        int count=intervals.length-1;
+        int end=intervals[0][1];
+        for (int i=1;iintervals.length;i++){
+            int current=intervals[i][0];
+            if (current=end){
+                end=intervals[i][1];
+                count--;
+            }
+        }
+        return count;
+    }
+
+    public static int findMin(int[] nums) {
+        int left=0,right=nums.length-1;
+        while (leftright){
+            int mid=left+(right-left)2;
+            if (nums[mid]=nums[right]){
+                left=mid+1;
+            }
+            else {
+                right=mid;
+            }
+        }
+        return nums[left];
+    }
+
+    public static int singleNonDuplicate(int[] nums) {
+        int left = 0, right = nums.length - 1;
+        while (left  right) {
+            int mid = left + (right - left)  2;
+             Step 1 mid ko hamesha EVEN banao
+             Kyunki humari saari logic even index ke pattern pe based hai
+            if (mid % 2 == 1) {
+                mid--;   odd hai to ek peeche kar do, ab even ho jaayega
+            }
+             Step 2 check karo pattern normal hai ya shift ho gaya
+            if (nums[mid] == nums[mid + 1]) {
+                 Pattern normal hai - single element right side mein hai
+                 mid aur mid+1 dono discard, kyunki ye pura pair hai
+                left = mid + 2;
+            } else {
+                 Pattern shift ho gaya - single element mid ya left mein hai
+                 mid ko discard nahi karte, kyunki khud answer ho sakta hai
+                right = mid;
+            }
+        }
+         Jab left == right, wahi single element hai
+        return nums[left];
+    }
+
+    public static int findPeakElement(int[] nums) {
+        int left=0,right=nums.length-1;
+        while (leftright){
+            int mid=left+(right-left)2;
+            if (nums[mid]nums[right]){
+                left=mid+1;
+            }
+            else {
+                right=mid;
+            }
+        }
+        return left;
+    }
+
+    public static int floorSqrt(int n) {
+        int left=0,right=n-1;
+        while (left=right){
+            int mid=left+(right-left)2;
+            if (midmid = n){
+                left=mid+1;
+            }
+            else {
+                right=mid-1;
+            }
+
+        }
+        return right;
+    }
+
+    public static int longestSumWithZero(int[] a) {
+        int maxLen = 0;
+        MapInteger, Integer hmap = new HashMap();
+        int sum = 0;
+        for (int i = 0; i  a.length; i++) {
+            sum += a[i];
+            if (sum == 0) {
+                maxLen = i + 1;
+            }
+            else if (hmap.containsKey(sum)) {
+                maxLen = Math.max(maxLen, i - hmap.get(sum));
+            }
+            else {
+                hmap.put(sum, i);
+            }
+        }
+        return maxLen;
+    }
+
+    public static int longestSubarraySumK(int[] arr, int k){
+        MapInteger, Integer hmap = new HashMap();
+        int sum = 0;
+        int maxLen = 0;
+        for (int i = 0; i  arr.length; i++) {
+            sum += arr[i];
+            if (sum == k) {
+                maxLen = i + 1;
+            }
+            if (hmap.containsKey(sum-k)) {
+                maxLen = Math.max(maxLen, i - hmap.get(sum-k));
+            }
+            if (!hmap.containsKey(sum)) {
+                hmap.put(sum, i);
+            }
+        }
+        return maxLen;
+    }
+
+
+    public static void main(String[] args) {
+        int[] ol = new int[] {9, -3, 3, -1, 6, -5};
+        System.out.println(longestSumWithZero(ol));
+        int[] ol1 = {10, 5, 2, 7, 1, 9};
+        int kl = 15;
+        System.out.println(longestSubarraySumK(ol1,kl));
+        int l1=36;
+        int l2=8;
+        System.out.println(floorSqrt(l1));
+        System.out.println(floorSqrt(l2));
+
+        int[] arrk={1,2,3,1};
+        int[] arrdk={1,2,1,3,5,6,4};
+        System.out.println(findPeakElement(arrk));
+        System.out.println(findPeakElement(arrdk));
+        int[] arrk11={1,1,2,3,3,4,4,8,8};
+        int[] arrk12={3,3,7,7,10,11,11};
+        System.out.println(singleNonDuplicate(arrk12));
+        int[] arrk1={4,5,6,7,0,1,2};
+        System.out.println(findMin(arrk));
+        System.out.println(findMin(arrk1));
+
+        int[][] intervals = {
+                {1, 2},
+                {2, 3},
+                {3, 4},
+                {1, 3}
+        };
+        System.out.println(eraseOverlapIntervals(intervals));
+
+
+        ConcurrentHashMapString,Integer cmap=new ConcurrentHashMap();
+        cmap.put(A,1);
+        cmap.put(B,2);
+        cmap.put(C,3);
+        int i=cmap.get(A);
+
+
+        int[] selfProd={10,5,2,6};
+        int[] selfProd1={1,2,3};
+        int k = 100;
+        System.out.println(numSubarrayProductLessThanK(selfProd,k));
+        System.out.println(numSubarrayProductLessThanK(selfProd1,1));
+
+        int[] prodArr={-2,0,-1};
+        int[] prodArr2={-1,1,0,-3,3};
+
+        int[] prodArr3={2,3,-2,4};
+        System.out.println(productExceptSelf(prodArr2));
+        System.out.println(productExceptSelf(prodArr3));
+
+        int[] prodArr1={2,3,-2,4};
+        System.out.println(maxProduct(prodArr));
+        System.out.println(maxProduct(prodArr1));
+
+
+        int[] nums1_1 = {1, 2, 3, 0, 0, 0};
+        int m1 = 3;
+        int[] nums2_1 = {2, 5, 6};
+        int n1 = 3;
+        mergeTwoSortedArray(nums1_1, m1, nums2_1, n1);
+        int[][] intervals11 = {{1, 5}, {3, 6}, {8, 10}, {15, 18}};
+        int[][] intervals22 = {{5, 7}, {1, 3}, {4, 6}, {8, 10}};
+        System.out.println(merge(intervals11));
+        System.out.println(merge(intervals22));
+        int[][] intervals111 = {{1,3}, { 6,9}};
+        int[] newInterval1={2,5};
+        insert(intervals111,newInterval1);
+        int[][] intervals222 = {{1, 10}, {20,30}};
+        int[] newInterval2={5,25};
+        insert(intervals222,newInterval2);
+        int[] inversion={2, 3, 7, 1, 3, 5};
+        numberOfInversions(inversion);
+
+
+
+        ListListInteger intervals1 = new ArrayList();
+        intervals1.add(Arrays.asList(1, 5));
+        intervals1.add(Arrays.asList(3, 6));
+        intervals1.add(Arrays.asList(8, 10));
+        intervals1.add(Arrays.asList(15, 18));
+        System.out.println(mergeOverlap(intervals1));
+        ListListInteger intervals2 = new ArrayList();
+        intervals2.add(Arrays.asList(5, 7));
+        intervals2.add(Arrays.asList(1, 3));
+        intervals2.add(Arrays.asList(4, 6));
+        intervals2.add(Arrays.asList(8, 10));
+        System.out.println(mergeOverlap(intervals2));
+
+        int n=5;
+        pascalTriangle(n);
+        int[] arr={-1,0,1,2,-1,-4};
+        threeSum(arr);
+
+        Animal ak=new Dog();
+        ak.sound();
+        Animal aa = new Dog();
+        aa.sound();
+        ((Dog) aa).bark();
+
+        ListEmployee employees = Arrays.asList(
+                new Employee(John, IT, Male, 75000, 28),
+                new Employee(Sarah, HR, Female, 65000, 32),
+                new Employee(Sarah, HR, Female, 69000, 32),
+                new Employee(Sarah, HR, Female, 69000, 32),
+                new Employee(Sarah, HR, Female, 62000, 32),
+                new Employee(Mike, IT, Male, 82000, 35),
+                new Employee(Emily, Finance, Female, 90000, 40),
+                new Employee(Emily, Finance, Female, 91000, 40),
+                new Employee(Emily, Finance, Female, 81000, 40),
+                new Employee(David, IT, Male, 68000, 26),
+                new Employee(Susan, IT, Female, 77000, 29));
+
+        MapString,Long empGroup=employees.stream().collect(Collectors.groupingBy(EmployeegetDept,Collectors.counting()));
+        System.out.println(empGroup);
+        empGroup.forEach((dept,count)- System.out.println(dept+  +count));
+        MapString,Double avgSalaryByDept=employees.stream().collect(Collectors.groupingBy(EmployeegetDept,Collectors.averagingDouble(EmployeegetSalary)));
+        System.out.println(avgSalaryByDept);
+        empGroup.forEach((dept,count)- System.out.println(dept+  +count));
+
+        MapString,ListString empListByDept=employees.stream().collect(Collectors.groupingBy
+                (EmployeegetDept,Collectors.mapping(EmployeegetName,Collectors.toList())));
+        System.out.println(empListByDept);
+        MapString,ListEmployee deptAndEmployeeList=employees.stream().collect(Collectors.groupingBy(
+                EmployeegetDept));
+        deptAndEmployeeList.forEach((dept,emp)- System.out.println(dept+  +emp));
+
+        MapString, ListEmployee top3ByDept = employees.stream()
+                .collect(Collectors.groupingBy(
+                        EmployeegetDept,
+                        Collectors.collectingAndThen(
+                                Collectors.toList(),
+                                list - list.stream()
+                                        .sorted(Comparator.comparingDouble(EmployeegetSalary).reversed())
+                                        .limit(3)
+                                        .collect(Collectors.toList())
+                        )
+                ));
+        top3ByDept.forEach((dept,emp)- System.out.println(dept+  +emp));
+MapString,ListString top3ByNameByDept=employees.stream().collect(Collectors.groupingBy(EmployeegetDept,
+        Collectors.collectingAndThen(Collectors.toList(),
+                list-list.stream().sorted(Comparator.comparingDouble(EmployeegetSalary).reversed()).limit(3).map(EmployeegetName).toList())));
+
+top3ByNameByDept.forEach((dept,empName)- System.out.println(dept+  +empName));
+
+        MapString, Double totalSalaryByDept=employees.stream().collect(Collectors.groupingBy(EmployeegetDept,Collectors.summingDouble(EmployeegetSalary)));
+        totalSalaryByDept.forEach((dept,sumOfsalary)- System.out.println(dept+  +sumOfsalary));
+        ListSale sales = new ArrayList();
+        String[] categories = {Electronics, Clothing, Books, Food, Toys};
+        String[] products = {
+                Laptop, Phone, Tablet, Headphones, Camera,
+                Shirt, Jeans, Dress, Jacket, Shoes,
+                Novel, Textbook, Comic, Biography, Cookbook,
+                Pizza, Burger, Sushi, Pasta, Salad,
+                Doll, Lego, Puzzle, Car, Robot
+        };
+
+        Random rand = new Random(123);
+
+        for (int d = 0; d  100; d++) {
+            String category = categories[rand.nextInt(categories.length)];
+            String product = products[rand.nextInt(products.length)];
+            double revenue = 100 + rand.nextDouble()  900;  100-1000
+            LocalDate date = LocalDate.now().minusDays(rand.nextInt(365));
+            int quantity = rand.nextInt(50) + 1;
+            sales.add(new Sale(product, category, revenue, date, quantity));
+        }
+
+
+        MapString, ListString top20SalesByCategory=sales.stream().collect(
+                Collectors.groupingBy(SalegetCategory,Collectors.collectingAndThen(Collectors.toList(),
+                        list-list.stream().sorted(Comparator.comparingDouble(SalegetRevenue).reversed())
+                .limit(20).map(SalegetProduct).toList())));
+
+        top20SalesByCategory.forEach((category,product)- System.out.println(category+  +product));
+        MapString,Double employeeSalaryGreat5k=employees.stream()
+                .filter(emp-emp.getSalary()5000).collect(Collectors.toMap(EmployeegetName,EmployeegetSalary));
+        System.out.println(employeeSalaryGreat5k);
+
+
+        ListStudent students = Arrays.asList(
+                new Student(Amit, 85),
+                new Student(Priya, 95),
+                new Student(Rahul, 78),
+                new Student(Sneha, 95),
+                new Student(Vikram, 78)
+        );
+        MapLong,Long hmap=students.stream().collect(Collectors.groupingBy(StudentgetMarks,Collectors.counting()));
+        System.out.println(hmap);
+
+
+
+
+         ListStudent topStudents=students.stream().filter(student - student.makrs=90&&student.makrs%2==0).toList();
+        System.out.println(topStudents);
+        topStudents.forEach(student - System.out.println( student.name+ +student.makrs));
+        ListInteger numsWithNull = Arrays.asList(1, 2, null, 4, 5, null, 6);
+        ListInteger evenNoNull =numsWithNull.stream().filter(ObjectsnonNull).filter(ll-n%2==0).toList();
+        System.out.println(evenNoNull);
+
+        ListString strings=Arrays.asList(hel, world, java, stream);
+        ListString upperWords=  strings.stream().map(StringtoUpperCase).toList();
+        System.out.println(upperWords);
+        ListString upperWords1=  strings.stream().map(ele-ele.toUpperCase()).toList();
+        System.out.println(upperWords1);
+        ListString upperWords2=  strings.stream().map(ele-ele.substring(0,1).toUpperCase()+ele.substring(2)).toList();
+        System.out.println(upperWords2);
+        ListString upperWords3=  strings.stream().filter(ele-ele.length()3).map(ele-ele.substring(0,1).toUpperCase()+ele.substring(2)).toList();
+        System.out.println(upperWords3);
+        ListString fruits = Arrays.asList(Apple, Banana, Avocado, Grapes, Apricot);
+        long count =fruits.stream().filter(ele-ele.startsWith(A)).count();Important count() returns long, not int!
+        System.out.println(count);
+        ListInteger numbers = Arrays.asList(7,8,1, 5,2, 2, 3, 4, 4, 5, 5, 5);
+        ListInteger unique =numbers.stream().distinct().toList();
+        System.out.println(unique);
+        ListInteger unique1 =numbers.stream().sorted().toList();
+        System.out.println(unique1);
+        SetInteger hset=new HashSet();
+        ListInteger unique2 =numbers.stream().filter(ele-hset.add(ele)).toList();
+        System.out.println(unique2);
+        ListInteger duplicateOnly=numbers.stream().filter(ele - !hset.add(ele)).toList();
+        System.out.println(Unique duplicates+duplicateOnly);
+        ListString ff = Arrays.asList(Mango, Apple, Banana, Grapes);
+        ListString ffAns=ff.stream().sorted().toList();
+        System.out.println(ffAns);
+        ListString ffAns1=ff.stream().sorted(Comparator.reverseOrder()).toList();
+        System.out.println(ffAns1);
+        ListString ffAns2=ff.stream().sorted(Comparator.comparing(Stringlength)).toList();
+        System.out.println(ffAns2);
+        ListInteger num=numbers.stream().sorted(Comparator.reverseOrder()).toList();
+        System.out.println(num);
+        ListString languages = Arrays.asList(java, Python, c++, JavaScript, Go);
+        ListString langAns=languages.stream().sorted(Comparator.comparing(Stringlength)).map(StringtoUpperCase).toList();
+        System.out.println(langAns);
+        int[] arr1={-2,1,-3,4,-1,2,1,-5,4};
+        int ans=maxSubArray(arr1);
+        System.out.println(ans);
+        int[] prices={7,1,5,3,6,4};
+        maxProfit(prices);
+        int[] rearrang ={3,1,-2,-5,2,-4};
+        rearrangeArray(rearrang);
+        int[] rearrang1 ={1, 4, 2, 3, 5};
+        nextPermutation(rearrang1);
+        int[][] matrix1 = {
+                {1, 1, 1},
+                {1, 0, 1},
+                {1, 1, 1}
+        };
+        int[][] matrix2 = {
+                {0, 1, 2, 0},
+                {3, 4, 5, 2},
+                {1, 3, 1, 5}
+        };
+        int[][] matrix3 = {
+                {0, 1, 2, 0},
+                {3, 4, 5, 2},
+                {1, 3, 1, 5}
+        };
+
+        System.out.println(setZeroes(matrix1));
+        System.out.println(setZeroes(matrix2));
+        System.out.println(rotate(matrix3));
+        System.out.println(spiralOrder(matrix3));
+
+        ListInteger list = Arrays.asList(10, 25, 5, 40, 15, 30);
+        Integer maxm=list.stream().max(Comparator.naturalOrder()).get();
+        System.out.println(maxm);
+        Integer maxm1 =list.stream().max(Comparator.comparing(IntegerintValue)).orElse(null);
+        System.out.println(maxm1);
+        int max = list.stream()
+                .mapToInt(IntegerintValue)
+                .max()
+                .orElseThrow();
+        System.out.println(max);
+        int maxm12=list.stream().reduce(0,(a,b)-abab);
+        int minM=list.stream().reduce(Integermin).orElse(null);
+        System.out.println(maxm12);
+        System.out.println(minM);
+        ListString names = Arrays.asList(Java, Spring, Hibernate, Docker);
+        String result=names.stream().collect(Collectors.joining(, ));
+        String result1=names.stream().collect(Collectors.joining(, ,[,]));
+        System.out.println(result);
+        System.out.println(result1);
+
+        String names1=students.stream().map(StudentgetName).collect(Collectors.joining(, ));
+        System.out.println(names1);
+
+        int rowIndex = 3;
+        System.out.println(getRow(rowIndex));
+        numbers.stream().distinct().sorted(Comparator.reverseOrder()).skip(1).findFirst();second highest
+        ListString items = Arrays.asList(apple, banana, apple, orange, banana, apple);
+         Output {banana=2, orange=1, apple=3}
+        MapString,Long frequencyMap=items.stream().collect(Collectors.groupingBy(item-item,Collectors.counting()));
+        frequencyMap.forEach((elem,freq)- System.out.println(elem+ +freq));
+
+
+
+
+    }
+
+    public static ListInteger getRow(int rowIndex) {
+        ListInteger row = new ArrayList();
+         Row 0 hamesha [1] se start hoti hai, isliye pehla element 1 daal diya
+        row.add(1);
+         i loop chalega 1 se rowIndex tak, kyunki row 0 already ban gayi hai upar
+        for (int i = 1; i = rowIndex; i++) {
+             Har nayi row banane se pehle, list ke end mein 1 add kar do
+             kyunki har row ka last element hamesha 1 hota hai (Pascal's triangle property)
+            row.add(1);
+             j loop right se left chalega (i-1 se 1 tak)
+             right se left chalne ka reason agar left se chalte, toh row.get(j-1)
+             already update ho chuki hoti current row ki value se, jo galat hoga
+            for (int j = i - 1; j  0; j--) {
+                 Current position ki value = (upar wali row ka current element) + (upar wali row ka pehle wala element)
+                 row.get(j) abhi bhi purani (upar wali) row ki value hai kyunki hum right se left ja rahe hain
+                 row.get(j-1) bhi abhi purani row ki value hai (update nahi hui abhi tak)
+                row.set(j, row.get(j) + row.get(j - 1));
+            }
+             j=0 wala element kabhi change nahi hota, wo hamesha 1 rehta hai
+             (Pascal's triangle mein har row ka first element 1 hota hai), isliye loop j0 tak hi chalaya
+        }
+        return row;
+
+    }
+
+
+
+    public static ListInteger spiralOrder(int[][] matrix) {
+        int top=0,left=0,right=matrix[0].length-1,bottom=matrix.length-1;
+        ListInteger ans=new ArrayList();
+        while (top=bottom&&left=right){setting boundary to execute our code.
+            for (int i=left;i=right;i++){
+                ans.add(matrix[top][i]);top liya hun Qki top will not be changed as row will be same here
+            }
+            top++;increase bcoz we will now go for second row.
+            for(int i=top;i=bottom;i++){top se bottom
+                ans.add(matrix[i][right]);
+            }
+            right--;decrease QKi 9 tak cover kar gaye hai ab 8 se number suru hoga.
+            if(top=bottom){right se left ki taraf
+                for(int i=right;i=left;i--){
+                    ans.add(matrix[bottom][i]);
+                }
+            }
+            bottom--;
+            if(left=right){bottom se top ki taraf
+                for(int i=bottom;i=top;i--){
+                    ans.add(matrix[i][left]);
+                }
+            }
+            left++;
+        }
+        return ans;
+
+    }
+
+    public static int[][] rotate(int[][] matrix) {
+        int n=matrix.length;
+        for (int i = 0; i  n; i++) {
+            for (int j = i; j  n; j++) {
+                int temp=matrix[i][j];
+                matrix[i][j]=matrix[j][i];
+                matrix[j][i]=temp;
+            }
+        }
+        for(int i=0;imatrix.length;i++){
+            for (int j=0;jmatrix[0].length2;j++){
+                int temp=matrix[i][j];
+                matrix[i][j]=matrix[i][n-j-1];
+                matrix[i][n-j-1]=temp;
+            }
+        }
+        return matrix;
+    }
+
+
+
+    public static ListListInteger pascalTriangle(int numRows) {
+        ListListInteger ans=new ArrayList();
+        for (int i=0;i=numRows;i++){
+            ListInteger currentRows=new ArrayList();
+            for (int j=0;j=i;j++){
+                if (j==0j==i){
+                    currentRows.add(1);
+                }
+                else {
+                    ListInteger prevRow  =new ArrayList(ans.get(i-1));
+                    currentRows.add(prevRow.get(j-1)+prevRow.get(j));
+                }
+            }
+            ans.add(currentRows);
+        }
+        return ans;
+    }
+
+    public static ListListInteger threeSum(int[] nums) {
+        ListListInteger ans=new ArrayList();
+        Arrays.sort(nums);
+        int n=nums.length;
+        for (int i=0;in-2;i++){
+            if (i  0 && nums[i] == nums[i - 1]) continue;
+            int left=i+1;
+            int right=n-1;
+            int target = -nums[i];
+            while(leftright){
+                int sum=nums[i]+nums[left]+nums[right];
+                if (sum==target){
+                   ans.add(Arrays.asList(nums[i],nums[left],nums[right]));
+                    while (left  right && nums[left] == nums[left + 1]) left++;
+                    while (left  right && nums[right] == nums[right - 1]) right--;
+                    left++;
+                    right--;
+                }
+                else if (sumtarget){
+                    left++;
+                }
+                else {
+                    right--;
+                }
+            }
+        }
+        return ans;
+
+    }
+
+
+    public static int[][] setZeroes(int[][] matrix) {
+        boolean[] rowMark=new boolean[matrix.length];
+        boolean[] colMark=new boolean[matrix[0].length];
+        for (int i=0;imatrix.length;i++){
+            for (int j=0;j matrix[0].length;j++){
+                if (matrix[i][j]==0){
+                    rowMark[i]=true;
+                    colMark[j]=true;
+                }
+            }
+        }
+
+        for (int i=0;imatrix.length;i++){
+            if (rowMark[i]){
+                for (int j=0;jmatrix[0].length;j++){
+                    matrix[i][j]=0;
+                }
+            }
+        }
+
+        for (int i=0;imatrix[0].length;i++){
+            if (colMark[i]){
+                for (int j=0;jmatrix.length;j++){
+                    matrix[j][i]=0;
+                }
+            }
+        }
+
+        return matrix;
+    }
+
+    public static int[] rearrangeArray(int[] nums) {
+        int[] arr=new int[nums.length];
+        int i=0,j=1;
+        for (int elenums){
+            if(ele0){
+                arr[i]=ele;
+                i=i+2;
+            }
+            else{
+                arr[j]=ele;
+                j=j+2;
+            }
+        }
+        return arr;
+    }
+
+    public static int maxProfit(int[] prices) {
+        int minM=Integer.MAX_VALUE;
+        int maxProfit=0;
+        int maxM=Integer.MIN_VALUE;
+        for (int i=0;iprices.length;i++){
+            minM=Math.min(minM,prices[i]);
+            maxProfit=Math.max(maxProfit,prices[i]-minM);
+        }
+        return maxProfit;
+
+    }
+
+
+    public static int maxSubArray(int[] nums) {
+        int maxSum=0;
+        int currentSum=0;
+        for (int i=0;inums.length;i++){
+            currentSum+=nums[i];
+            if (currentSum0){
+                currentSum=0;
+            }
+            maxSum=Math.max(maxSum,currentSum);
+        }
+
+        return maxSum;
+    }
+
+    public static void nextPermutation(int[] nums) {
+        int breakPoint=-1;
+        int n=nums.length;
+        for (int i=n-2;i=0;i--){
+            if (nums[i]nums[i+1]){
+                breakPoint=i;
+                break;
+            }
+        }
+        if (breakPoint==-1) {
+            reverse(nums,0,n-1);
+        }
+        for (int i=n-1;ibreakPoint;i--){
+            if (nums[i]nums[breakPoint]){
+                swap(nums,i,breakPoint);
+                break;
+            }
+        }
+    }
+
+    public static void reverse(int [] arr,int i,int j){
+        while (ij){
+            swap(arr,i++,j--);
+        }
+    }
+
+    public static void swap(int[] arr,int i,int j){
+        int temp=arr[i];
+        arr[i]=arr[j];
+        arr[j]=temp;
+    }
+}
+
+
+
