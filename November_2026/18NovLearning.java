@@ -411,6 +411,17 @@ Follow up: Can you come up with an algorithm that runs in O(m + n) time?
         }
     }
 /*
+Ab 3 pointers ki zaroorat kyun padi?
+Ab humne decide kar liya ki right se fill karenge.
+
+Toh humein kya chahiye?
+
+nums1 ka last actual element check karna hai.
+
+nums2 ka last element check karna hai.
+
+Dono mein jo bada ho, use last empty position par rakhna hai.
+ 
 Ab second while loop kyun lagaya?
  Maan lo nums1 mein saare elements chhote hain:
 nums1 = [1, 2, 3, 0, 0, 0]
