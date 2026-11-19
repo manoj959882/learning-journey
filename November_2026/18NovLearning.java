@@ -406,12 +406,37 @@ Follow up: Can you come up with an algorithm that runs in O(m + n) time?
                 nums1[k--]=nums2[j--];
             }
         }
-        while(j>=0) {
+        while(j>=0) {//Ab yeh while loop kyun lagaya?
             nums1[k--]=nums2[j--];
         }
     }
+/*
+Ab second while loop kyun lagaya?
+ Maan lo nums1 mein saare elements chhote hain:
+nums1 = [1, 2, 3, 0, 0, 0]
+nums2 = [4, 5, 6]
+ Comparison karte karte i = -1 ho jayega.
+
+Lekin nums2 mein abhi bhi [4, 5, 6] bache hain.
+
+Toh unhe nums1 mein copy karna padega.
+
+Isliye second while loop lagaya hai.
+
+Ek interesting baat: while(i >= 0) lagane ki zaroorat nahi hai, kyunki nums1 ke remaining elements already correct position par hote hain.
+ Sabse important: Right se left kyun ja rahe hain?
+Socho agar tum left se right merge karte:
+nums1 = [1, 4, 5, 0, 0, 0]
+ Agar tum index 1 par 2 daal doge, toh existing 4 overwrite ho sakta hai.
+Lekin right se left jaane par hum pehle empty spaces fill karte hain. Isliye existing elements safe rehte hain.
+Bas ye 3 baatein yaad rakhna:
+i aur j se dono arrays ke last elements compare karo.
+Jo bada ho, use k position par daalo.
+Pointer ko peeche move karte jao.
 
 
+
+ 
 Problem 2: leetcode 21. Merge Two Sorted Lists
 
   
