@@ -448,9 +448,83 @@ Pointer ko peeche move karte jao.
 
 
  
-Problem 2: leetcode 21. Merge Two Sorted Lists
+Problem 2: leetcode 148. Sort List
 
-  
+  Given the head of a linked list, return the list after sorting it in ascending order.
+ Input: head = [4,2,1,3]
+Output: [1,2,3,4]
+
+
+ Input: head = [-1,5,3,4,0]
+Output: [-1,0,3,4,5]
+Example 3:
+
+Input: head = []
+Output: []
+
+
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+class Solution {
+    public ListNode sortList(ListNode head) {
+         if (head == null || head.next == null) {//base case jaha pe ruk jaye matlab single element par.
+            return head;
+        }
+        ListNode slow=head;//pointer for mid
+        ListNode fast=head;
+        while (fast.next != null && fast.next.next != null) {
+            slow=slow.next;
+            fast=fast.next.next;
+        }
+        //now making the left half and right half.
+        //second half is
+        ListNode temp=slow.next;
+        slow.next=null;//made head as first half.
+        ListNode left=sortList(head);
+       ListNode right =sortList(temp);
+        return merge(left,right);
+
+    }
+    public static ListNode merge(ListNode left,ListNode right){
+        //ek dummy Node banaya maine kyoki mujhe temp Node me sort karke element ko rakhna hai sort karke.
+        ListNode head=new ListNode(0);
+        ListNode temp=head;
+        while(left!=null&&right!=null){
+            if (left.val<right.val){
+                temp.next=left;
+                left=left.next;
+            }
+            else{
+                temp.next=right;
+                right=right.next;
+            }
+            temp=temp.next;
+        }
+        while (left!=null){
+            temp.next=left;
+            left=left.next;
+            temp=temp.next;
+        }
+        while (right!=null){
+            temp.next=right;
+            right=right.next;
+            temp=temp.next;
+        }
+        return head.next;
+    }
+
+}
+
+
+
   
 
 
